@@ -116,6 +116,12 @@
             "ref": "a249484db698d1a847a30291c8f732414ac47e25"
         }
     },
+    "symfony/security-core": {
+        "version": "v4.0.2"
+    },
+    "symfony/security-csrf": {
+        "version": "v4.0.2"
+    },
     "symfony/translation": {
         "version": "3.3",
         "recipe": {

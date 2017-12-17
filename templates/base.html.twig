@@ -1,13 +1,18 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
     <head>
         <meta charset="UTF-8">
         <title>{% block title %}Welcome!{% endblock %}</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         {% block stylesheets %}{% endblock %}
         <link rel="stylesheet" href="{{ asset('build/app.css') }}">
     </head>
     <body>
-        {% block body %}{% endblock %}
+        <div class="container">
+            <nav class="navbar navbar-light bg-faded"><h1 class="navbar-brand mb-0">XM Markets history checker</h1></nav>
+            {% block body %}{% endblock %}
+        </div>
         {% block javascripts %}{% endblock %}
         <script src="{{ asset('build/app.js') }}"></script>
     </body>

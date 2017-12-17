@@ -12,3 +12,7 @@ yarn add @symfony/webpack-encore --dev
 
 node_modules\.bin\encore dev
 
+**Usage**
+
+Visit following url: /historical
+
