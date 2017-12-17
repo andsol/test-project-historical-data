@@ -154,12 +154,12 @@ class SymbolData implements HydrationInterface
     public function toArray()
     {
         return [
-            'Date' => $this->date->format(\DateTime::ISO8601),
-            'Open' => $this->open,
-            'High' => $this->high,
-            'Low' => $this->low,
-            'Close' => $this->close,
-            'Volume' => $this->volume
+            'date' => $this->date->format('M d, Y'),
+            'open' => $this->open,
+            'high' => $this->high,
+            'low' => $this->low,
+            'close' => $this->close,
+            'volume' => $this->volume
         ];
     }
 }

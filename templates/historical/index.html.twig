@@ -9,5 +9,71 @@
             {{ form_end(form) }}
         </div>
     </div>
+    <div class="row">
+    {% if symbol %}
+        <h1>{{ symbol.name|e }}</h1>
+        <ul>
+            <li>Symbol: {{ symbol.symbol|e }}</li>
+            <li>Last sale: {{ symbol.lastSale|e }}</li>
+            <li>Market cap: {{ symbol.marketCap|e }}</li>
+            <li>IPO Year: {{ symbol.IPOyear|e }}</li>
+            <li>Sector: {{ symbol.sector|e }}</li>
+            <li>Industry: {{ symbol.industry|e }}</li>
+            <li>Quote: {{ symbol.quote|e }}</li>
+        </ul>
+    {% endif %}
+    </div>
 
+    <div class="row">
+        {% if symbolData %}<div id="chartPlaceholder"></div>
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Date</th>
+                <th>Open</th>
+                <th>High</th>
+                <th>Low</th>
+                <th>Close</th>
+                <th>Volume</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for data in symbolData %}
+                <tr>
+                    <td>{{ data.date|e }}</td>
+                    <td>{{ data.open|e }}</td>
+                    <td>{{ data.high|e }}</td>
+                    <td>{{ data.low|e }}</td>
+                    <td>{{ data.close|e }}</td>
+                    <td>{{ data.volume|e }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        {% endif %}
+    </div>
+
+{% endblock %}
+
+{% block javascripts %}
+    {% if symbolDataJson %}
+        <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+        <script type="text/javascript">
+            google.charts.load('current', {'packages':['corechart']});
+            google.charts.setOnLoadCallback(drawChart);
+            var symbolDataJson = {{(symbolDataJson|json_encode|raw)}};
+
+            function drawChart() {
+                var data = google.visualization.arrayToDataTable(symbolDataJson);
+
+                var options = {
+                    title: 'Price chart',
+                    hAxis: {title: 'Date',  titleTextStyle: {color: '#333'}}
+                };
+
+                var chart = new google.visualization.AreaChart(document.getElementById('chartPlaceholder'));
+                chart.draw(data, options);
+            }
+        </script>
+    {% endif %}
 {% endblock %}

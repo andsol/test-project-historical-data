@@ -166,6 +166,15 @@ class Symbol implements HydrationInterface
 
     public function toArray()
     {
-
+        return [
+            'name' => $this->Name,
+            'symbol' => $this->Symbol,
+            'lastSale' => $this->LastSale,
+            'marketCap' => $this->MarketCap,
+            'IPOyear' => $this->IPOyear,
+            'sector' => $this->Sector,
+            'industry' => $this->industry,
+            'quote' => $this->SummaryQuote,
+        ];
     }
 }

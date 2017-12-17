@@ -57,6 +57,19 @@ class HistoricalController extends Controller
             }
 
             $viewData['symbolData'] = $arrayData;
+
+            $json = [];
+            $json[] = ['Date', 'Open price', 'Close price'];
+            foreach ($arrayData as $row) {
+                $json[] = [$row['date'], $row['open'], $row['close']];
+            }
+
+            $viewData['symbolDataJson'] = $json;
+
+        } else {
+            $viewData['symbol'] = null;
+            $viewData['symbolData'] = null;
+            $viewData['symbolDataJson'] = null;
         }
 
         $viewData['form'] = $form->createView();
