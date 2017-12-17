@@ -53,6 +53,16 @@
         {% endif %}
     </div>
 
+    {% if emailForm %}
+    <div class="row">
+        <div class="col-sm-8">
+            {% form_theme emailForm 'bootstrap_4_horizontal_layout.html.twig' %}
+            {{ form_start(emailForm) }}
+            {{ form_widget(emailForm) }}
+            {{ form_end(emailForm) }}
+        </div>
+    </div>
+    {% endif %}
 {% endblock %}
 
 {% block javascripts %}

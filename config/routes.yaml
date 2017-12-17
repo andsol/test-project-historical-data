@@ -5,3 +5,6 @@
 app_historical_index:
     path: /historical
     controller: App\Controller\HistoricalController::indexAction
+app_historical_email:
+    path: /historical/email
+    controller: App\Controller\HistoricalController::emailAction
