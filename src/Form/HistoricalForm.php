@@ -16,6 +16,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 class HistoricalForm extends AbstractType
 {
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
 

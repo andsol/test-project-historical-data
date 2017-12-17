@@ -10,13 +10,26 @@ namespace App\Controller;
 
 use App\Entity\Historical;
 use App\Form\HistoricalForm;
+use App\Gateway\SymbolDataGatewayInterface;
+use App\Gateway\SymbolGatewayInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 class HistoricalController extends Controller
 {
+    private $dataGateway;
+    private $symbolGateway;
+
+    public function __construct(SymbolDataGatewayInterface $dataGateway, SymbolGatewayInterface $symbolGateway)
+    {
+        $this->dataGateway = $dataGateway;
+        $this->symbolGateway = $symbolGateway;
+    }
+
     public function indexAction(Request $request)
     {
+        $viewData = [];
+
         $historical = new Historical();
         $historical->setStartDate(new \DateTime());
         $historical->setEndDate(new \DateTime());
@@ -26,24 +39,27 @@ class HistoricalController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // $form->getData() holds the submitted values
-            // but, the original `$task` variable has also been updated
-            $task = $form->getData();
+            $historical = $form->getData();
 
-            // ... perform some action, such as saving the task to the database
-            // for example, if Task is a Doctrine entity, save it!
-            // $em = $this->getDoctrine()->getManager();
-            // $em->persist($task);
-            // $em->flush();
+            $symbols = $this->symbolGateway->fetchAll();
+            $viewData['symbol'] = $symbols[$historical->getSymbol()];
 
-            return $this->redirectToRoute('task_success');
-        } else {
+            $symbolData = $this->dataGateway->fetch(
+                $historical->getSymbol(),
+                $historical->getDateFrom(),
+                $historical->getDateTo()
+            );
 
+            $viewData['symbolData'] = $symbolData;
         }
 
+        $viewData['form'] = $form->createView();
 
-        return $this->render('historical/index.html.twig', array(
-            'form' => $form->createView(),
-        ));
+        return $this->render('historical/index.html.twig', $viewData);
+    }
+
+    public function sendEmail()
+    {
+
     }
 }

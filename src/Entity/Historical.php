@@ -9,11 +9,13 @@
 namespace App\Entity;
 
 use Symfony\Component\Validator\Constraints as Assert;
+use App\Validator\Constraints as AppAssert;
 
 class Historical
 {
     /**
      * @Assert\NotBlank()
+     * @AppAssert\Symbol()
      */
     private $symbol;
     /**
