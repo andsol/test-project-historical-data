@@ -21,8 +21,8 @@ class EmailForm extends AbstractType
     {
         $builder->setAction('/historical/email');
         $builder->add('symbol', HiddenType::class);
-        $builder->add('startDate', DateType::class, ['attr'=>array('style'=>'display:none;'),'label' => false]);
-        $builder->add('endDate', DateType::class, ['attr'=>array('style'=>'display:none;'),'label' => false]);
+        $builder->add('startDate', DateType::class, ['attr'=> ['style'=>'display:none;'],'label' => false]);
+        $builder->add('endDate', DateType::class, ['attr'=> ['style'=>'display:none;'],'label' => false]);
         $builder->add('email', EmailType::class);
         $builder->add('save', SubmitType::class, array('label' => 'Send'));
     }
