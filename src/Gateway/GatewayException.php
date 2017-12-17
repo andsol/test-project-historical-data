@@ -10,5 +10,4 @@ namespace App\Gateway;
 
 class GatewayException extends \RuntimeException
 {
-
 }
