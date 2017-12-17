@@ -9,6 +9,7 @@
 namespace App\Controller;
 
 use App\Entity\Historical;
+use App\Entity\Symbol;
 use App\Form\HistoricalForm;
 use App\Gateway\SymbolDataGatewayInterface;
 use App\Gateway\SymbolGatewayInterface;
@@ -42,15 +43,20 @@ class HistoricalController extends Controller
             $historical = $form->getData();
 
             $symbols = $this->symbolGateway->fetchAll();
-            $viewData['symbol'] = $symbols[$historical->getSymbol()];
+            $viewData['symbol'] = $symbols[$historical->getSymbol()]->toArray();
 
             $symbolData = $this->dataGateway->fetch(
                 $historical->getSymbol(),
-                $historical->getDateFrom(),
-                $historical->getDateTo()
+                $historical->getStartDate(),
+                $historical->getEndDate()
             );
 
-            $viewData['symbolData'] = $symbolData;
+            $arrayData = [];
+            foreach ($symbolData as $row) {
+                $arrayData[] = $row->toArray();
+            }
+
+            $viewData['symbolData'] = $arrayData;
         }
 
         $viewData['form'] = $form->createView();

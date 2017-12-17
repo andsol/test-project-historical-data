@@ -8,8 +8,12 @@
 
 namespace App\Gateway;
 
+use App\Entity\Symbol;
+
 interface SymbolGatewayInterface
 {
-
+    /**
+     * @return Symbol[]
+     */
     public function fetchAll();
 }

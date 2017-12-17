@@ -9,7 +9,7 @@
 namespace App\Entity;
 
 
-class SymbolData
+class SymbolData implements HydrationInterface
 {
     /**
      * @var \DateTime
@@ -135,5 +135,31 @@ class SymbolData
     public function setVolume(float $volume): void
     {
         $this->volume = $volume;
+    }
+
+    public static function fromArray(array $data)
+    {
+        $object = new self();
+
+        $object->setDate(new \DateTime($data['﻿Date']));
+        $object->setOpen($data['Open']);
+        $object->setHigh($data['High']);
+        $object->setLow($data['Low']);
+        $object->setClose($data['Close']);
+        $object->setVolume($data['Volume']);
+
+        return $object;
+    }
+
+    public function toArray()
+    {
+        return [
+            'Date' => $this->date->format(\DateTime::ISO8601),
+            'Open' => $this->open,
+            'High' => $this->high,
+            'Low' => $this->low,
+            'Close' => $this->close,
+            'Volume' => $this->volume
+        ];
     }
 }

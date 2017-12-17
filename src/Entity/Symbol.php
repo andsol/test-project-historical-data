@@ -9,7 +9,7 @@
 namespace App\Entity;
 
 
-class Symbol
+class Symbol implements HydrationInterface
 {
     private $Symbol;
     private $Name;
@@ -162,5 +162,10 @@ class Symbol
         $object->setSummaryQuote($rawData['Summary Quote']);
 
         return $object;
+    }
+
+    public function toArray()
+    {
+
     }
 }

@@ -8,7 +8,12 @@
 
 namespace App\Gateway;
 
+use App\Entity\SymbolData;
+
 interface SymbolDataGatewayInterface
 {
-    public function fetch($symbolName, $dateFrom, $dateTo);
+    /**
+     * @return SymbolData[]
+     */
+    public function fetch($symbolName, \DateTime $dateFrom, \DateTime $dateTo);
 }

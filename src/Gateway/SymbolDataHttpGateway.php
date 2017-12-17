@@ -9,11 +9,12 @@
 namespace App\Gateway;
 
 
+use App\Entity\SymbolData;
 use GuzzleHttp\Client;
 
 class SymbolDataHttpGateway implements SymbolDataGatewayInterface
 {
-    const URL = 'http://www.nasdaq.com/screening/companies-by-name.aspx?&render=download';
+    const URL = 'https://finance.google.com/finance/historical';
 
     private $client;
 
@@ -22,22 +23,41 @@ class SymbolDataHttpGateway implements SymbolDataGatewayInterface
         $this->client = $client;
     }
 
-    public function fetch($symbolName, $dateFrom, $dateTo)
+    public function fetch($symbolName, \DateTime $dateFrom, \DateTime $dateTo)
     {
         try {
-            $response = $this->client->get(self::URL);
-
-            if ($response->getStatusCode() != 200) {
-                throw  new \RuntimeException('Wrong header');
-            }
+            $response = $this->client->get(self::URL, [
+                \GuzzleHttp\RequestOptions::QUERY => [
+                    'output' => 'csv',
+                    'q' => $symbolName,
+                    'startdate' => $dateFrom->format('M d, Y'),
+                    'enddata' => $dateTo->format('M d, Y')
+                ]
+            ]);
 
             $csv = (string) $response->getBody();
 
-            $array = str_getcsv($csv);
+            $rows = explode("\n", $csv);
+            $columns = array_shift($rows);
+            $columns = str_getcsv($columns, ',');
 
-            foreach ($array as $row) {
-
+            if (!count($rows)) {
+                throw  new \RuntimeException('No data');
             }
+
+            $result = [];
+            foreach ($rows as $row) {
+                $exploded = str_getcsv($row, ',');
+
+                if (count($exploded) != count($columns)) {
+                    continue;
+                }
+
+                $data = array_combine($columns, $exploded);
+                $result[] = SymbolData::fromArray($data);
+            }
+            $this->data = $result;
+            return $result;
 
         } catch (\Exception $e) {
             throw new GatewayException('Can not fetch data from source', null, $e);
