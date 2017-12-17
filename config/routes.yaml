@@ -1,3 +1,7 @@
 #index:
 #    path: /
 #    defaults: { _controller: 'App\Controller\DefaultController::index' }
+
+app_historical_index:
+    path: /historical
+    controller: App\Controller\HistoricalController::indexAction
